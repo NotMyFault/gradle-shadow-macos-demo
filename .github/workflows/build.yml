@@ -4,11 +4,11 @@ on: push
 
 jobs:
   build:
-    if: github.repository_owner == 'IntellectualSites'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
+        java_vendor: [ temurin, zulu, liberica, microsoft, corretto ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -17,7 +17,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: temurin
+          distribution: ${{ matrix.java_vendor }}
           java-version: 17
       - name: Build on ${{ matrix.os }}
         run: ./gradlew clean build
